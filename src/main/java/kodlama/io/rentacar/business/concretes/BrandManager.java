@@ -21,4 +21,24 @@ public class BrandManager implements BrandService {
         if (repository.getAll().size()==0) throw  new RuntimeException("Marka bulunamadı");
         return repository.getAll();
     }
+
+    @Override
+    public Brand getById(int id) {
+        return repository.getById(id);
+    }
+
+    @Override
+    public Brand add(Brand brand) {
+        return repository.add(brand);
+    }
+
+    @Override
+    public Brand update(int id, Brand brand) {
+        return repository.update(id, brand);
+    }
+
+    @Override
+    public void delete(int id) {
+        repository.delete(id);
+    }
 }
