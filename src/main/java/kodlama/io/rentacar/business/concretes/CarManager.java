@@ -8,6 +8,7 @@ import kodlama.io.rentacar.business.dto.responses.get.GetAllCarsResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetCarResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateCarResponse;
 import kodlama.io.rentacar.entities.Car;
+import kodlama.io.rentacar.entities.enums.State;
 import kodlama.io.rentacar.repository.CarRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -22,9 +23,15 @@ public class CarManager implements CarService {
     private final ModelMapper mapper;
 
     @Override
-    public List<GetAllCarsResponse> getAll() {
-        List<Car> cars = repository.findAll();
-        List<GetAllCarsResponse> response = cars
+    public List<GetAllCarsResponse> getAll(State state) {
+        List<Car> carList;
+        if (state == null) {
+            carList = repository.findAll();
+        } else {
+            carList = repository.findAllByState(state);
+        }
+
+        List<GetAllCarsResponse> response = carList
                 .stream()
                 .map(car -> mapper.map(car, GetAllCarsResponse.class))
                 .toList();
@@ -56,8 +63,8 @@ public class CarManager implements CarService {
         checkIfCarExistsById(id);
         Car car = mapper.map(request, Car.class);
         car.setId(id);
-        repository.save(car);
-        UpdateCarResponse response = mapper.map(car, UpdateCarResponse.class);
+        Car createdCar = repository.save(car);
+        UpdateCarResponse response = mapper.map(createdCar, UpdateCarResponse.class);
         return  response;
     }
 
@@ -65,6 +72,11 @@ public class CarManager implements CarService {
     public void delete(int id) {
         checkIfCarExistsById(id);
         repository.deleteById(id);
+    }
+
+    @Override
+    public Car findCarById(int id) {
+        return repository.findById(id).orElseThrow();
     }
     // Business rules
 

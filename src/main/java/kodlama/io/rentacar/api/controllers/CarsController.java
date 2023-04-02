@@ -7,6 +7,7 @@ import kodlama.io.rentacar.business.dto.responses.create.CreateCarResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetAllCarsResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetCarResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateCarResponse;
+import kodlama.io.rentacar.entities.enums.State;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,8 @@ public class CarsController {
     private  final CarService service;
 
     @GetMapping
-    public List<GetAllCarsResponse> getAll() {
-        return service.getAll();
+    public List<GetAllCarsResponse> getAll(@RequestParam(required = false) State state) {
+        return service.getAll(state);
     }
 
     @GetMapping("/{id}")
