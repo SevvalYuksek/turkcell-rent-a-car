@@ -19,32 +19,37 @@ import java.util.List;
 @AllArgsConstructor
 public class MaintenancesController {
 
-    private final MaintenanceService maintenanceService;
+    private final MaintenanceService service;
 
     @GetMapping
     public List<GetAllMaintenancesResponse> getAll() {
-        return maintenanceService.getAll();
+        return service.getAll();
     }
 
     @GetMapping("/{id}")
     public GetMaintenanceResponse getById(@PathVariable int id) {
-        return maintenanceService.getById(id);
+        return service.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CreateMaintenanceResponse add(@RequestBody CreateMaintenanceRequest request) {
-        return maintenanceService.add(request);
+        return service.add(request);
+    }
+
+    @PutMapping("/return")
+    public GetMaintenanceResponse returnCarFromMaintenance(@RequestParam int carId) {
+        return service.returnCarFromMaintenance(carId);
     }
 
     @PutMapping("/{id}")
     public UpdateMaintenanceResponse update(@PathVariable int id, @RequestBody UpdateMaintenanceRequest request) {
-        return maintenanceService.update(id, request);
+        return service.update(id, request);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
-        maintenanceService.delete(id);
+        service.delete(id);
     }
 }

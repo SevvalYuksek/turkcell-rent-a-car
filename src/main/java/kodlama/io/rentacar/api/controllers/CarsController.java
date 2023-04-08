@@ -18,11 +18,11 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/cars")
 public class CarsController {
-    private  final CarService service;
+    private final CarService service;
 
     @GetMapping
-    public List<GetAllCarsResponse> getAll(@RequestParam(required = false) State state) {
-        return service.getAll(state);
+    public List<GetAllCarsResponse> getAll(@RequestParam(defaultValue = "true") boolean includeMaintenance) {
+        return service.getAll(includeMaintenance);
     }
 
     @GetMapping("/{id}")

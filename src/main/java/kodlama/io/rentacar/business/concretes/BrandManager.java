@@ -35,7 +35,7 @@ public class BrandManager implements BrandService {
 
     @Override
     public GetBrandResponse getById(int id) {
-        checkIfBrandExists(id);
+        checkIfBrandExistsById(id);
         Brand brand = repository.findById(id).orElseThrow();
         GetBrandResponse response = mapper.map(brand, GetBrandResponse.class);
 
@@ -47,37 +47,38 @@ public class BrandManager implements BrandService {
         checkIfBrandExistsByName(request.getName());
         Brand brand = mapper.map(request, Brand.class);
         brand.setId(0);
-        Brand createdBrand = repository.save(brand);
-        CreateBrandResponse response = mapper.map(createdBrand, CreateBrandResponse.class);
+        repository.save(brand);
+        CreateBrandResponse response = mapper.map(brand, CreateBrandResponse.class);
 
         return response;
     }
 
-
     @Override
     public UpdateBrandResponse update(int id, UpdateBrandRequest request) {
-        checkIfBrandExists(id);
+        checkIfBrandExistsById(id);
         Brand brand = mapper.map(request, Brand.class);
         brand.setId(id);
         repository.save(brand);
         UpdateBrandResponse response = mapper.map(brand, UpdateBrandResponse.class);
+
         return response;
     }
 
     @Override
     public void delete(int id) {
-        checkIfBrandExists(id);
+        checkIfBrandExistsById(id);
         repository.deleteById(id);
     }
 
     // Business rules
 
+    private void checkIfBrandExistsById(int id) {
+        if (!repository.existsById(id)) throw new RuntimeException("Böyle bir marka mevcut değil.");
+    }
+
     private void checkIfBrandExistsByName(String name) {
-        if (repository.existsByNameIgnoreCase(name)){
+        if (repository.existsByNameIgnoreCase(name)) {
             throw new RuntimeException("Böyle bir marka sistemde kayıtlı!");
         }
-    }
-    private void checkIfBrandExists(int id) {
-        if (!repository.existsById(id)) throw new RuntimeException("Böyle bir marka mevcut değil.");
     }
 }

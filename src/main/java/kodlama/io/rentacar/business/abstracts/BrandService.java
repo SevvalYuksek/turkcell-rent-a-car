@@ -11,6 +11,7 @@ import kodlama.io.rentacar.entities.Brand;
 import java.util.List;
 
 public interface BrandService {
+    // CRUD operations
     List<GetAllBrandsResponse> getAll();
     GetBrandResponse getById(int id);
     CreateBrandResponse add(CreateBrandRequest request);

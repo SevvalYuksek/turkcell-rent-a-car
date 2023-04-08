@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface CarRepository extends JpaRepository<Car, Integer> {
 
-    List<Car> findAllByState(State state);
+    List<Car> findAllByStateIsNot(State state);
 }
