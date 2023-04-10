@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/maintenances")
 @AllArgsConstructor
+@RequestMapping("/api/maintenances")
 public class MaintenancesController {
-
     private final MaintenanceService service;
 
     @GetMapping
